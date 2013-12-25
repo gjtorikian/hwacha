@@ -2,12 +2,12 @@ require "hwacha/version"
 require "typhoeus"
 
 class Hwacha
-  def initialize(max_concurrent_requests=20)
-    @max_concurrent_requests = max_concurrent_requests
+  def initialize(opts)
+    @options = {:max_concurrency => 20, :followlocation => true}.merge(opts)
   end
 
   def check(urls)
-    hydra = Typhoeus::Hydra.new(:max_concurrency => @max_concurrent_requests)
+    hydra = Typhoeus::Hydra.new(@options)
 
     Array(urls).each do |url|
       request = Typhoeus::Request.new(url)
